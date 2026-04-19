@@ -11,11 +11,13 @@ import ProtectedRoute from './components/Auth/ProtectedRoute.jsx';
 
 function App() {
   const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
+      setLoading(false);
     });
 
     // Listen for auth changes
@@ -25,6 +27,14 @@ function App() {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center', fontFamily: 'Outfit, sans-serif' }}>
+        <h2>Carregando... ✨</h2>
+      </div>
+    );
+  }
 
   return (
     <Router basename="/gafanhoto_explicador/">

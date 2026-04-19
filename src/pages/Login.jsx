@@ -71,6 +71,12 @@ function Login() {
 
           {error && <p style={{ color: '#FF6B6B', fontSize: '0.9rem', textAlign: 'center', fontWeight: 'bold' }}>{error}</p>}
 
+          <div style={{ textAlign: 'center' }}>
+            <Link to="/forgot-password" style={{ color: '#666', fontSize: '0.9rem', textDecoration: 'none' }}>
+              Esqueci minha senha 🙊
+            </Link>
+          </div>
+
           <button type="submit" className="primary" disabled={loading} style={{ width: '100%', justifyContent: 'center', marginTop: '1rem' }}>
             {loading ? 'Entrando...' : 'Entrar no Mundo Mágico'}
           </button>

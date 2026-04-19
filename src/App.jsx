@@ -5,6 +5,8 @@ import Home from './pages/Home.jsx';
 import Reader from './pages/Reader.jsx';
 import Admin from './pages/Admin.jsx';
 import Login from './pages/Login.jsx';
+import ForgotPassword from './pages/ForgotPassword.jsx';
+import ResetPassword from './pages/ResetPassword.jsx';
 import ProtectedRoute from './components/Auth/ProtectedRoute.jsx';
 
 function App() {
@@ -31,6 +33,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/read/:storyId" element={<Reader />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route 
             path="/admin/*" 
             element={

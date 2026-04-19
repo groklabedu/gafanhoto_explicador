@@ -8,7 +8,7 @@ import ReactFlow, {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { useParams, Link } from 'react-router-dom';
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../../lib/supabase.js';
 import { Save, Plus, ArrowLeft, Image as ImageIcon, Type } from 'lucide-react';
 
 const initialNodes = [];

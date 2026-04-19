@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Plus, Trash2, Edit3, ArrowLeft } from 'lucide-react';
-import StoryEditor from '../components/Admin/StoryEditor';
+import StoryEditor from '../components/Admin/StoryEditor.jsx';
 
 function Admin() {
   return (

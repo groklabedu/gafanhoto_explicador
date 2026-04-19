@@ -9,7 +9,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase.js';
-import { Save, Plus, ArrowLeft, Image as ImageIcon, Type } from 'lucide-react';
+import { Save, Plus, ArrowLeft, Image as ImageIcon, Type, Upload, Trash2, Loader2 } from 'lucide-react';
 
 const initialNodes = [];
 const initialEdges = [];
@@ -136,6 +136,33 @@ function StoryEditor() {
     }
   }
 
+  async function handleFileUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setLoading(true);
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${storyId}/${Math.random()}.${fileExt}`;
+    const filePath = `scenes/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('story-images')
+      .upload(filePath, file);
+
+    if (uploadError) {
+      alert('Erro ao subir imagem: ' + uploadError.message);
+      setLoading(false);
+      return;
+    }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('story-images')
+      .getPublicUrl(filePath);
+
+    setSelectedScene({ ...selectedScene, image_url: publicUrl });
+    setLoading(false);
+  }
+
   async function saveFlow() {
     setLoading(true);
     // Save positions
@@ -204,12 +231,33 @@ function StoryEditor() {
             />
           </div>
           <div style={{ marginBottom: '1rem' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}><ImageIcon size={16} /> URL da Imagem:</label>
-            <input 
-              value={selectedScene.image_url || ''}
-              onChange={(e) => setSelectedScene({ ...selectedScene, image_url: e.target.value })}
-              style={{ width: '100%', borderRadius: '12px', border: '2px solid #2F3E46', padding: '0.5rem' }}
-            />
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}><ImageIcon size={16} /> Imagem da Cena:</label>
+            
+            {selectedScene.image_url && (
+              <div style={{ position: 'relative', marginBottom: '0.5rem' }}>
+                <img src={selectedScene.image_url} alt="Preview" style={{ width: '100%', borderRadius: '12px', border: '2px solid #2F3E46' }} />
+                <button 
+                  onClick={() => setSelectedScene({ ...selectedScene, image_url: '' })}
+                  style={{ position: 'absolute', top: 5, right: 5, padding: '5px', background: '#FF6B6B', boxShadow: 'none', border: '2px solid #2F3E46' }}
+                >
+                  <Trash2 size={14} color="white" />
+                </button>
+              </div>
+            )}
+
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <input 
+                type="text" 
+                placeholder="Cole a URL ou suba um arquivo ->"
+                value={selectedScene.image_url || ''}
+                onChange={(e) => setSelectedScene({ ...selectedScene, image_url: e.target.value })}
+                style={{ flex: 1, borderRadius: '12px', border: '2px solid #2F3E46', padding: '0.5rem', fontSize: '0.8rem' }}
+              />
+              <label className="button secondary" style={{ padding: '0.5rem', cursor: 'pointer', boxShadow: 'none' }}>
+                {loading ? <Loader2 className="animate-spin" size={18} /> : <Upload size={18} />}
+                <input type="file" hidden accept="image/*" onChange={handleFileUpload} />
+              </label>
+            </div>
           </div>
           <div style={{ marginBottom: '1rem' }}>
             <label>

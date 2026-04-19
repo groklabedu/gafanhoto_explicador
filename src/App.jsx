@@ -6,7 +6,7 @@ import Admin from './pages/Admin.jsx';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/gafanhoto_explicador/">
       <div className="app-shell">
         <Routes>
           <Route path="/" element={<Home />} />

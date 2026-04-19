@@ -24,7 +24,8 @@ function Login() {
       setError('E-mail ou senha incorretos! Tente novamente. 😅');
       setLoading(false);
     } else {
-      navigate('/admin');
+      // Forçamos o redirecionamento para a rota absoluta de admin
+      navigate('/admin', { replace: true });
     }
   }
 
